@@ -1,0 +1,37 @@
+Environments:
+（VMware）
+ubuntu 1805
+ROS2-dashing
+
+
+reference link: 
+https://blog.csdn.net/qq_44717317/article/details/104547474
+https://www.ncnynl.com/archives/201801/2253.html
+https://docs.ros.org/en/dashing/Installation/Ubuntu-Install-Binary.html
+https://zhuanlan.zhihu.com/p/145606586   [ROS1与ROS2共存使用切换方法]
+
+
+
+1.Errors in [Add the ROS 2 apt repository]
+
+  Solution: cd 到/etc下修改 Hosts ,定义raw.githubusercontent.com 最新IP地址（可在https://www.ipaddress.com/网站查询）
+
+2.Errors in [rosdep install --from-paths /home/buffoon/ros2_dashing/ros2-linux/share --ignore-src --rosdistro dashing -y --skip-keys "console_bridge fastcdr fastrtps libopensplice67 libopensplice69 osrf_testing_tools_cpp poco_vendor rmw_connext_cpp rosidl_typesupport_connext_c rosidl_typesupport_connext_cpp rti-connext-dds-5.3.1 tinyxml_vendor tinyxml2_vendor urdfdom urdfdom_headers"]
+
+  Solution: 放弃官网推荐的从下载的release 版本安装，执行 $ sudo apt install ros-dashing-desktop 安装桌面版
+
+3.AttributeError: type object 'type' has no attribute '_TYPE_SUPPORT' This might be a ROS 1 message type but it should be a ROS 2 message type. Make sure to source your ROS 2 workspace after your ROS 1 workspace.
+
+
+  Solution: 在.bashrc中注释掉对于ROS1中工作空间的source语句 (#source /home/buffoon/catkin_ws/devel/setup.bash)
+
+
+4.create a launch file that included in the rospackage
+
+	添加launch.py 文件后需要在cmakelist.txt中添加：
+	install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME})
+	可把launch 文件添加进功能包中
+
+	
+

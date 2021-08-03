@@ -1,0 +1,134 @@
+
+2021.7.31
+
+refernce link :https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%8E%B7%E5%8F%96-Git-%E4%BB%93%E5%BA%93
+
+check the version of the Git:
+$: git --version
+
+look for help
+$ git help
+or
+$ git help config    /* get help of the configuration */
+
+check the configuration of the Git
+$ git config --list	/* all the configuration in this PC */
+$ git config user.name	/* get the name */
+$ git config user.email	/* get the email */
+$ git configuser.signingkey 
+
+set the configuration
+$ git config --global user.name "buffoon-wy"
+$ git config --global user.email buffoon@outlook.com
+
+
+通过SSH连接Github服务器，配置账号
+reference link : https://www.runoob.com/w3cnote/git-guide.html
+
+1.首先在本地创建ssh key
+	$ ssh-keygen -t rsa -C " buffoon@outlook.com" 
+	按照要求设置密钥存储路径（直接按回车会生成至主目录.ssh文件夹下）和设置本地密码（5123，根据你的密码加密密钥），文件夹中id_rsa.pub存储了ssh密钥[key]，全部复制
+2.网页登录GitHub，进入 Account Settings（账户配置），左边选择SSH Keys，Add SSH Key,title随便填，粘贴在你电脑上生成的[key]。
+
+
+3.验证是否成功：输入$ ssh -T git@github.com
+报错：sign_and_send_pubkey: signing failed: agent refused operation
+git@github.com: Permission denied (publickey).
+
+尝试一：
+	$ eval"$(ssh-agent -s)"
+	$ ssh-add
+	失败
+尝试二：
+	$ ssh-agent -s
+	$ ssh-add ~/.ssh/id_rsa 
+	成功
+
+
+
+常用命令：
+
+$ git init	//初始化工作目录，会在目录中生成一个.git的文件夹，默认隐藏，内含版本控制和配置
+
+$ git add .	//添加目录下的全部文件，git会记录并追踪这些文件，也可将.替换成指定的文件名字
+
+$ git commit -am '注释' 	//保存并提交一个版本快照（一次备份）
+
+$ git log 	//查看详细的历史提交（commit）记录
+or
+$ git log --oneline	//查看简洁版本历史提交记录
+
+
+
+Issue 1: 远程仓库的设置和链接，暂时有2种方式进行链接：Https 和 SSH
+
+https 链接： 
+	$ git remote add origin https://github.com/buffoon-wy/buffoon	//通过HTTPS的方式链接GitHub下buffoon的仓库，别名为origin，以后可以使用origin代替该网址
+
+多个远程仓库可以通过不同的别名进行设置，查看所有远程仓库别名的命令：
+	$ git remote
+会返回
+	origin
+也可以通过
+	$ git remote -v 
+查看当前远程仓库详细信息，返回
+	origin	https://github.com/buffoon-wy/buffoon (fetch)
+	origin	https://github.com/buffoon-wy/buffoon (push)
+可以发现本地库已经关联了origin的远程库，并且，该远程库指向GitHub。通过过https的方式进行仓库链接在push时（即本地代码更新到服务器）需要输入用户名和密码，比较麻烦，但也可以通过Issue 2设置解决。
+
+SSH链接：
+	需要先把之前的链接删除，貌似一个远程仓库只能链接一个本地仓库？
+	先输入
+	$ git remote rm origin		//删除关联的origin的远程库
+	再输入
+	$ git remote add origin git@github.com:buffoon-wy/buffoon.git	//通过ssh的方式链接，注意和HTTPS的区别
+
+
+Issue 2:push 到 github，即上传本地仓库至GitHub服务器
+使用命令
+	$ git push origin master	//将master分支上传到别名origin所代表的网址仓库内，
+也可以将master替换成其余分支名称，则会上传相应分支
+
+push 到 github 时，每次都要输入用户名和密码的问题
+参考链接：https://www.cnblogs.com/jiading/articles/13385410.html
+
+	
+
+Issue3:自定义上传到GitHub服务器的文件或文件夹
+先建立.gitignore 文件，可使用
+	$ touch .gitignore 
+
+该文件用于自定义规则设置忽略或必须添加到远程仓库的文件或文件夹，具体语法可参照：
+	https://www.cnblogs.com/ayseeing/p/3580341.html
+	https://www.cnblogs.com/yulinlewis/p/10231035.html
+Attention!!
+	最好在第一次上传仓库前就添加好.gitignore ，然后再使用git add . 命令，如果先使用git add .，就默认把所有文件已经添加至目录，随后添加.gitignore则无效，这样就得使用git rm -r --cached 【filename】 命令先从目录中移除对应【filename】代表的文件或文件夹，而后就可以使用git add . 命令添加文件，git commit -am ' '建立快照，git push origin master 将master 分支上传到origin代表的链接地址（即你设定的仓库地址）
+
+
+Issue4: 从远程仓库拉取代码并合并
+1.先将本地仓库与远程仓库建立链接（此处采用HTTPS方式）
+	$ git remote add NOTE-of-ALL https://github.com/buffoon-wy/NOTE_of_ALL  //NOTE-of-ALL将作为该仓库链接的别名
+
+fetch方式：
+	//方法一
+$ git fetch origin master //从远程的origin仓库的master分支下载代码到本地的origin master
+
+$ git log -p master.. origin/master//比较本地的仓库和远程参考的区别
+
+$ git merge origin/master//把远程下载下来的代码合并到本地仓库，远程的和本地的合并
+
+	//方法二
+$ git fetch origin master:temp //从远程的origin仓库的master分支下载到本地并新建一个分支temp
+
+$ git diff temp//比较master分支和temp分支的不同
+
+$ git merge temp//合并temp分支到master分支
+
+$ git branch -d temp//删除temp
+
+pull方式：
+$ git pull NOTE-of-ALL  master	//将pull NOTE-of-ALL的代码拉取并合并到master分支
+
+
+
+

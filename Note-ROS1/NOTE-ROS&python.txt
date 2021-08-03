@@ -1,0 +1,15 @@
+ubuntu 一般自带两种Python,python2 和 Python3
+
+可通过$ python ,$ python2 ,$ python3 等3个命令分别查看并进入默认的Python，Python2版本，Python3版本；
+
+可在.bashrc中添加alias python=python3 将默认Python由2改为3；
+
+pip命令作用于Python2中，pip3命令作用于Python3 中；
+
+实际测得ubuntu1805+ROS melodic 版本中的Python默认调用了Python3，ROS缺少的包可以通过pip3进行安装；
+
+在Python程序首行添加
+	#!/usr/bin/env python3
+会自动选择Python3版本解释器，然鹅目前ROS老版本中对Python2支持较多,在git下来的arbotix_driver的Python程序中需修改回python2解释器
+
+

@@ -1,0 +1,12 @@
+
+
+1.虚拟机下运行gazebo 出错：“VMware: vmw_ioctl_command error Invalid argument.
+Aborted (core dumped)
+
+解决：每次打开gazebo前都需要在终端下设置环境变量为0
+	 $ export SVGA_VGPU10=0
+
+
+2.launch文件加载环境模型进入gazebo仿真时报错：SpawnModel: Failure - model name mrobot already exist.
+	原因：环境模型room.world里已经保存了一次机器人模型，launch文件又再次加载，重复载入会冲突，
+	解决：将launch文件中的加载机器人代码注释，成功打开

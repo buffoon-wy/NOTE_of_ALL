@@ -1,0 +1,11 @@
+查看摄像头列表
+ls /dev/ | grep video
+或
+ls /dev/video*
+
+查看USB设备列表
+lsusb
+
+查看串口设备列表
+ls /dev/ttyS*
+

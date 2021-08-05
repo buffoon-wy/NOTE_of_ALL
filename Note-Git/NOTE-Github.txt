@@ -1,6 +1,8 @@
+#github note
+
+##configuration
 
 2021.7.31
-
 refernce link :https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%8E%B7%E5%8F%96-Git-%E4%BB%93%E5%BA%93
 
 check the version of the Git:
@@ -46,7 +48,7 @@ git@github.com: Permission denied (publickey).
 
 
 
-常用命令：
+##常用命令
 
 $ git init	//初始化工作目录，会在目录中生成一个.git的文件夹，默认隐藏，内含版本控制和配置
 
@@ -58,8 +60,19 @@ $ git log 	//查看详细的历史提交（commit）记录
 or
 $ git log --oneline	//查看简洁版本历史提交记录
 
+$ git branch   //查看本地分支
+
+$ git branch -a 	//查看所有分支（本地 + 远程）
+
+$ git branch [newbranchname]   //创建新本地分支
+
+$ git checkout  [branch_name]	//切换本地分支
+
+$ git branch -d [branch_name]	//删除本地分支
 
 
+
+##常见问题
 Issue 1: 远程仓库的设置和链接，暂时有2种方式进行链接：Https 和 SSH
 
 https 链接： 
